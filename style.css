@@ -10,25 +10,33 @@
   --danger:#ff453a;
 }
 *{box-sizing:border-box; -webkit-tap-highlight-color:transparent;}
-html,body{height:100%;}
+html,body{height:100%; width:100%;}
 body{
   margin:0;
   background:var(--bg);
   color:var(--text);
   font-family:-apple-system,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
   overflow:hidden;
+  -webkit-text-size-adjust:100%;
 }
 #app{
   max-width:480px;
+  width:100%;
   margin:0 auto;
   height:100vh;
+  height:100dvh; /* accounts for mobile browser URL bars */
+  height:var(--app-height, 100dvh); /* JS-corrected height for in-app webviews/browsers with inaccurate vh */
   position:relative;
   background:var(--bg);
   display:flex;
   flex-direction:column;
   overflow:hidden; /* keeps off-screen panels actually hidden regardless of viewport width */
-  border-left:1px solid #111;
-  border-right:1px solid #111;
+}
+@media (min-width:481px){
+  #app{
+    border-left:1px solid #111;
+    border-right:1px solid #111;
+  }
 }
 
 /* ---------- Screens ---------- */
@@ -48,7 +56,7 @@ body{
 /* ---------- List screen ---------- */
 .topbar{
   display:flex; align-items:center; justify-content:flex-end;
-  padding:18px 20px 6px; position:relative;
+  padding:calc(18px + env(safe-area-inset-top)) 20px 6px; position:relative;
 }
 .icon-btn{
   background:none; border:none; color:var(--text);
@@ -57,7 +65,7 @@ body{
 }
 .icon-btn:active{ background:var(--surface); }
 .page-title{
-  font-size:34px; font-weight:800; padding:6px 20px 10px;
+  font-size:clamp(26px, 8vw, 34px); font-weight:800; padding:6px 20px 10px;
   letter-spacing:-0.5px;
 }
 
@@ -149,8 +157,10 @@ body{
 /* ---------- Reminder screen ---------- */
 .rem-header{
   display:flex; align-items:center; justify-content:space-between;
-  padding:18px 20px; font-size:17px;
+  padding:calc(18px + env(safe-area-inset-top)) 20px 18px; font-size:17px;
+  gap:8px;
 }
+.rem-header .title{ font-size:clamp(14px, 4vw, 17px); text-align:center; flex:1; }
 .rem-header .link-btn{
   background:none; border:none; color:var(--accent);
   font-size:16px; cursor:pointer; padding:4px;
@@ -175,7 +185,7 @@ body{
 }
 .rem-row{
   display:flex; align-items:center; justify-content:space-between;
-  padding:16px 0;
+  padding:16px 0; flex-wrap:wrap; gap:10px;
 }
 .rem-row + .rem-row{ border-top:1px solid var(--divider); }
 .rem-label{ font-size:16px; }
@@ -263,4 +273,35 @@ select.native-select{
 .cal-footer button{
   background:none; border:none; color:var(--accent); font-size:14px;
   font-weight:600; cursor:pointer; padding:6px 8px;
+}
+
+/* ---------- Small phone widths (e.g. 320-360px) ---------- */
+@media (max-width:360px){
+  .wheel{ width:72px; }
+  .wheel-item{ font-size:18px; }
+  .wheel-item.selected{ font-size:22px; }
+  .rem-card{ margin:14px 10px; padding:6px 12px; }
+  .calendar-box{ width:270px; padding:12px; }
+  .pill{ padding:8px 12px; font-size:13px; }
+}
+
+/* ---------- Short screens (landscape phones) ---------- */
+@media (max-height:600px){
+  .empty-state{ padding-bottom:20px; }
+  .wheel{ height:110px; }
+  .wheel-pad{ height:40px; }
+  .wheel-center-lines{ top:40px; }
+  .page-title{ padding:2px 20px 6px; }
+}
+
+/* ---------- Tablets & desktop: give the phone-style app a bit of breathing room ---------- */
+@media (min-width:600px){
+  body{
+    display:flex; align-items:center; justify-content:center;
+  }
+  #app{
+    height:92vh; height:92dvh; max-height:900px;
+    border-radius:28px; border:1px solid #222;
+    box-shadow:0 20px 60px rgba(0,0,0,.6);
+  }
 }
