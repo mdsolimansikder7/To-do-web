@@ -2,55 +2,105 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Today's Tasks · To-Do</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,500;0,9..144,600;1,9..144,500&family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>To-dos</title>
 <link rel="stylesheet" href="style.css">
-<link rel="icon" type="image/svg+xml" href="images/favicon.svg">
 </head>
 <body>
+<div id="app">
 
-  <div class="board">
-
-    <header class="board-header">
-      <div class="header-top">
-        <p class="eyebrow">Date · <span id="today-date"></span></p>
-        <span class="pin" aria-hidden="true"></span>
+  <!-- ===== LIST SCREEN ===== -->
+  <div id="screen-list" class="screen active">
+    <div class="topbar">
+      <button class="icon-btn" id="menuBtn" title="More">⋮</button>
+      <div class="menu-dropdown" id="menuDropdown">
+        <div class="menu-item" id="menuAddReminder"><span class="ic">🔔</span> Reminder</div>
+        <div class="menu-item" id="menuAddAlarm"><span class="ic">⏰</span> Alarm</div>
       </div>
-      <h1>Today's Tasks</h1>
-      <p class="tagline">Write down what you need to do — we'll keep track of the rest.</p>
-    </header>
+    </div>
+    <div class="page-title">To-dos</div>
 
-    <form id="todo-form">
-      <input type="text" id="todo-input" placeholder="Add a new task..." autocomplete="off">
-      <button type="submit" aria-label="Add task">
-        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-          <path d="M9 2V16M2 9H16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
-        </svg>
-      </button>
-    </form>
-
-    <div class="toolbar">
-      <div class="filters">
-        <button class="filter-btn active" data-filter="all">All </button>
-        <button class="filter-btn" data-filter="active">Active</button>
-        <button class="filter-btn" data-filter="completed">Completed</button>
-      </div>
-      <span id="items-left" class="items-left">0 tasks left</span>
+    <div id="emptyState" class="empty-state">
+      <div class="empty-emoji">📝</div>
+      <div class="empty-text">No to-dos</div>
     </div>
 
-    <ul id="todo-list"></ul>
+    <div id="taskList" class="task-list" style="display:none;"></div>
 
-    <div class="footer">
-      <div class="progress-track">
-        <div class="progress-fill" id="progress-fill"></div>
+    <div id="addBar" class="add-bar">
+      <input id="addInput" class="add-input" placeholder="New  to-do write..." />
+      <button id="addSendBtn" class="add-send" disabled>➤</button>
+    </div>
+
+    <button id="fabBtn" class="fab">＋</button>
+  </div>
+
+  <!-- ===== SCHEDULE REMINDER SCREEN ===== -->
+  <div id="screen-reminder" class="screen">
+    <div class="rem-header">
+      <button class="link-btn" id="remCancel">Cancel</button>
+      <div class="title">Schedule reminder</div>
+      <button class="link-btn" id="remSave">Save</button>
+    </div>
+
+    <div class="rem-scroll">
+      <input id="remTitleInput" class="rem-title-input" placeholder="কিসের রিমাইন্ডার?" style="display:none;">
+      <div id="remTaskPreview" class="rem-task-preview"></div>
+
+      <div class="rem-card">
+        <div class="rem-row">
+          <span class="rem-label">Remind me on</span>
+          <div style="display:flex; gap:8px;">
+            <button class="pill" id="datePill">August 17, 2026</button>
+            <button class="pill accent" id="timePill">5:00 AM</button>
+          </div>
+        </div>
+
+        <div class="time-wheel-wrap">
+          <div class="wheel" id="hourWheel"></div>
+          <div class="wheel" id="minWheel"></div>
+          <div class="wheel" id="ampmWheel"></div>
+          <div class="wheel-center-lines"></div>
+        </div>
       </div>
-      <button id="clear-completed">Clear Completed</button>
+
+      <div class="rem-card">
+        <div class="rem-row">
+          <span class="rem-label">Repeat</span>
+          <select class="native-select" id="repeatSelect">
+            <option>Never</option>
+            <option>Daily</option>
+            <option>Weekly</option>
+            <option>Monthly</option>
+            <option>Yearly</option>
+          </select>
+        </div>
+        <div class="rem-row">
+          <span class="rem-label">Alarm</span>
+          <button class="toggle" id="alarmToggle"></button>
+        </div>
+      </div>
     </div>
   </div>
 
-<script type="module" src="script.js"></script>
+  <!-- ===== CUSTOM CALENDAR POPUP ===== -->
+  <div class="calendar-overlay" id="calendarOverlay">
+    <div class="calendar-box">
+      <div class="cal-header">
+        <button class="cal-nav" id="calPrev">‹</button>
+        <div class="cal-title" id="calTitle">August 2026</div>
+        <button class="cal-nav" id="calNext">›</button>
+      </div>
+      <div class="cal-grid" id="calGrid"></div>
+      <div class="cal-footer">
+        <button id="calCancel">Cancel</button>
+        <button id="calToday">Today</button>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
